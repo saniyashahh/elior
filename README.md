@@ -26,7 +26,7 @@ The main idea of the project is to create a simple website where users can explo
 
 Clone the repository:
 ```bash
-git clone https://github.com/saniyashahh/elior.git
+git clone https://github.com/saniyashahh/elior-cafe-website.git
 ```
 
 Go to the project folder and start the development server:
