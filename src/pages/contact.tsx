@@ -67,7 +67,7 @@ function CafeGallery({
     setCurrent((current + direction + images.length) % images.length);
 
   return (
-    <div className="group relative aspect-[4/3] overflow-hidden bg-[#E8DDD0] sm:aspect-[16/10]">
+    <div className="relative aspect-[4/3] overflow-hidden bg-[#E8DDD0] sm:aspect-[16/10]">
       <img
         src={`/images/cafes/${images[current]}`}
         alt={`${name} - photo ${current + 1}`}
@@ -84,7 +84,7 @@ function CafeGallery({
             type="button"
             onClick={() => changeImage(direction)}
             aria-label={`${label} image for ${name}`}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2C211C]/55 text-white backdrop-blur-sm transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2C211C]/55 text-white backdrop-blur-sm transition-colors hover:bg-[#2C211C]/75"
           >
             <Icon size={15} strokeWidth={1.5} />
           </button>
@@ -117,7 +117,7 @@ export default function Contact() {
               className="border-b border-[#2C211C]/10 px-5 py-8 sm:px-8 sm:py-10 lg:px-20 lg:py-12"
             >
               <div
-                className={`grid items-center gap-7 sm:gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 ${
+                className={`grid items-center gap-7 sm:gap-10 lg:grid-cols-2 lg:gap-14 ${
                   reverse ? "lg:[&>*:first-child]:order-2" : ""
                 }`}
               >

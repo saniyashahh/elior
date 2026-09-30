@@ -12,6 +12,7 @@ export default function MenuDisplay() {
   const [category, setCategory] = useState<Category>("All");
   const [controlsOpen, setControlsOpen] = useState(false);
   const [builderOpen, setBuilderOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
   const controlsRef = useRef<HTMLDivElement>(null);
 
   const items =
@@ -30,6 +31,7 @@ export default function MenuDisplay() {
     };
 
     document.addEventListener("mousedown", close);
+
     return () => document.removeEventListener("mousedown", close);
   }, []);
 
@@ -41,6 +43,10 @@ export default function MenuDisplay() {
   const openBuilder = () => {
     setControlsOpen(false);
     setBuilderOpen(true);
+  };
+
+  const toggleItem = (name: string) => {
+    setActiveItem((current) => (current === name ? null : name));
   };
 
   if (builderOpen) {
@@ -68,6 +74,7 @@ export default function MenuDisplay() {
               }`}
             >
               {item}
+
               <span
                 className={`absolute -bottom-2 left-0 right-0 h-px bg-[#2C211C] transition-opacity ${
                   category === item ? "opacity-100" : "opacity-0"
@@ -92,38 +99,59 @@ export default function MenuDisplay() {
       </header>
 
       {/* Menu */}
-      <div className="mx-auto grid max-w-[1500px] grid-cols-2 gap-3 py-5 sm:gap-5 sm:py-7 lg:grid-cols-4 lg:gap-6 lg:py-8">
-        {items.map((item) => (
-          <article
-            key={item.name}
-            className="min-w-0 overflow-hidden bg-[#EFE5DA]"
-          >
-            <div className="aspect-square overflow-hidden sm:aspect-[4/3]">
-              <img
-                src={item.image}
-                alt={item.name}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
-              />
-            </div>
+      <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-3 py-5 sm:gap-4 sm:py-6 lg:grid-cols-4 lg:gap-5 lg:py-7">
+        {items.map((item) => {
+          const isActive = activeItem === item.name;
 
-            <div className="p-3 sm:p-4 lg:p-5">
-              <div className="flex items-baseline justify-between gap-2">
-                <h3 className="min-w-0 truncate font-serif text-base leading-tight text-[#2C211C] sm:text-lg lg:text-xl">
+          return (
+            <article
+              key={item.name}
+              className="min-w-0 overflow-hidden bg-[#EFE5DA]"
+            >
+              <div
+                onClick={() => {
+                  if (window.innerWidth < 1024) {
+                    toggleItem(item.name);
+                  }
+                }}
+                className="group relative aspect-[5/4] cursor-pointer overflow-hidden lg:cursor-default"
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  loading="lazy"
+                  className={`h-full w-full object-cover transition-all duration-500 ${
+                    isActive
+                      ? "scale-[1.02] brightness-[0.45]"
+                      : "brightness-100 group-hover:scale-[1.02] group-hover:brightness-[0.45]"
+                  }`}
+                />
+
+                <div
+                  className={`absolute inset-0 flex items-center justify-center px-5 text-center transition-opacity duration-500 sm:px-8 ${
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-0 group-hover:opacity-100"
+                  }`}
+                >
+                  <p className="max-w-[240px] text-[10px] leading-relaxed text-[#EFE5DA] sm:text-xs lg:text-sm">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-baseline justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
+                <h3 className="min-w-0 truncate font-serif text-sm leading-tight text-[#2C211C] sm:text-base lg:text-lg">
                   {item.name}
                 </h3>
 
-                <span className="shrink-0 text-[10px] font-medium text-[#2C211C] sm:text-xs lg:text-sm">
+                <span className="shrink-0 text-[9px] font-medium text-[#2C211C] sm:text-[10px] lg:text-xs">
                   ₹{item.price}
                 </span>
               </div>
-
-              <p className="mt-1.5 hidden text-xs leading-relaxed text-[#2C211C]/55 lg:block">
-                {item.description}
-              </p>
-            </div>
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
 
       {/* Mobile / tablet controls */}
@@ -173,15 +201,16 @@ export default function MenuDisplay() {
           type="button"
           onClick={() => setControlsOpen((open) => !open)}
           aria-expanded={controlsOpen}
-          aria-label={controlsOpen ? "Close menu controls" : "Open menu controls"}
+          aria-label={
+            controlsOpen
+              ? "Close menu controls"
+              : "Open menu controls"
+          }
           className={`relative flex h-10 w-10 items-center justify-center rounded-full border border-[#2C211C]/10 bg-[#EFE5DA]/90 text-[#2C211C] shadow-[0_6px_20px_rgba(44,33,28,0.10)] backdrop-blur-md transition-all duration-200 hover:bg-[#EFE5DA] sm:h-11 sm:w-11 ${
             controlsOpen ? "rotate-180" : ""
           }`}
         >
-          <SlidersHorizontal
-            size={15}
-            strokeWidth={1.5}
-          />
+          <SlidersHorizontal size={15} strokeWidth={1.5} />
 
           {category !== "All" && (
             <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[#A8754F]" />

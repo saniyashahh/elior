@@ -25,34 +25,18 @@ const navItems = [
 ];
 
 const socials = [
-  { label: "Instagram", icon: "◎" },
-  { label: "Facebook", icon: "f" },
-  { label: "Zomato", icon: "Z" },
+  { label: "Instagram", icon: "◎", url: "https://www.instagram.com/" },
+  { label: "Facebook", icon: "f", url: "https://www.facebook.com/" },
+  { label: "Zomato", icon: "Z", url: "https://www.zomato.com/" },
 ];
 
-function EliorLogo() {
-  return (
-    <svg
-      viewBox="0 0 40 40"
-      className="size-9"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M11 8h20M11 20h15M11 32h20M11 8v24"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M28 20c0-4.4-3.1-7.5-7.5-7.5"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+const Logo = ({ full = false }: { full?: boolean }) => (
+  <img
+    src={full ? "/logo1.png" : "/logo2.png"}
+    alt="Elior"
+    className={full ? "w-[60px] h-auto" : "size-7 object-contain"}
+  />
+);
 
 export default function Sidebar({
   activeView,
@@ -68,22 +52,17 @@ export default function Sidebar({
   useEffect(() => {
     if (!menuOpen) return;
 
-    const handleOutsideClick = (event: PointerEvent) => {
-      const target = event.target as HTMLElement;
-
+    const handleOutsideClick = (e: PointerEvent) => {
       if (
         window.innerWidth < 768 &&
-        !target.closest("[data-mobile-navbar]")
+        !(e.target as HTMLElement).closest("[data-mobile-navbar]")
       ) {
         onToggle();
       }
     };
 
     document.addEventListener("pointerdown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("pointerdown", handleOutsideClick);
-    };
+    return () => document.removeEventListener("pointerdown", handleOutsideClick);
   }, [menuOpen, onToggle]);
 
   return (
@@ -98,26 +77,21 @@ export default function Sidebar({
           className="pointer-events-none absolute right-0 top-0 h-full w-[18px] translate-x-full"
           style={{
             background:
-              "linear-gradient(to right, rgba(44,33,28,.12), transparent)",
+              "linear-gradient(to right, rgba(156, 139, 130, 0.12), transparent)",
           }}
         />
 
+        {/* Logo */}
         <div className="flex h-[104px] items-center justify-center border-b border-[#2C211C]/10">
           <button
             onClick={() => onNavigate("home")}
             aria-label="Go to home"
-            className="text-[#2C211C]"
           >
-            {menuOpen ? (
-              <span className="font-serif text-3xl tracking-tight">
-                Elior
-              </span>
-            ) : (
-              <EliorLogo />
-            )}
+            <Logo full={menuOpen} />
           </button>
         </div>
 
+        {/* Navigation */}
         <nav className="flex flex-1 items-center justify-center">
           <div className="flex flex-col items-center gap-9">
             {navItems.map((item) => {
@@ -141,7 +115,6 @@ export default function Sidebar({
                       }`}
                     >
                       {item.label}
-
                       <span
                         className={`absolute bottom-0 left-1/2 h-px -translate-x-1/2 bg-[#A8754F] transition-all ${
                           active ? "w-full" : "w-0 group-hover:w-1/2"
@@ -159,6 +132,7 @@ export default function Sidebar({
           </div>
         </nav>
 
+        {/* Socials */}
         <div className="border-t border-[#2C211C]/10 px-4 py-6">
           <div
             className={`flex items-center ${
@@ -166,17 +140,21 @@ export default function Sidebar({
             }`}
           >
             {socials.map((social) => (
-              <button
+              <a
                 key={social.label}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={social.label}
                 className="text-sm font-medium text-[#2C211C]/50 transition hover:text-[#2C211C]"
               >
                 {social.icon}
-              </button>
+              </a>
             ))}
           </div>
         </div>
 
+        {/* Expand / Collapse */}
         <button
           onClick={onToggle}
           aria-label={menuOpen ? "Collapse sidebar" : "Expand sidebar"}
@@ -192,12 +170,12 @@ export default function Sidebar({
         className="fixed inset-x-0 top-0 z-50 bg-[#E8DDD0] md:hidden"
       >
         <div className="relative flex h-[72px] items-center border-b border-[#2C211C]/10 px-5">
+          {/* Home = full logo, other sections = symbol */}
           <button
             onClick={() => mobileNavigate("home")}
             aria-label="Go to home"
-            className="text-[#2C211C]"
           >
-            <EliorLogo />
+            <Logo full={activeView === "home"} />
           </button>
 
           {activeView === "menu" && (
@@ -224,6 +202,7 @@ export default function Sidebar({
           />
         </div>
 
+        {/* Mobile menu */}
         <div
           className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
             menuOpen ? "max-h-[360px] opacity-100" : "max-h-0 opacity-0"
@@ -253,7 +232,6 @@ export default function Sidebar({
                     >
                       {item.icon}
                     </span>
-
                     <span className={active ? "font-medium" : ""}>
                       {item.label}
                     </span>
@@ -262,16 +240,20 @@ export default function Sidebar({
               })}
             </div>
 
+            {/* Mobile socials */}
             <div className="mt-7 w-full border-t border-[#2C211C]/10 pt-5">
               <div className="flex justify-center gap-6">
                 {socials.map((social) => (
-                  <button
+                  <a
                     key={social.label}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={social.label}
                     className="text-sm font-medium text-[#2C211C]/50 transition hover:text-[#2C211C]"
                   >
                     {social.icon}
-                  </button>
+                  </a>
                 ))}
               </div>
             </div>
