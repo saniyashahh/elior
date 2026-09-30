@@ -1,144 +1,200 @@
-import { ArrowUpRight, Clock, Mail, MapPin, Phone } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Clock,
+  Mail,
+  Phone,
+} from "lucide-react";
 
 const locations = [
   {
     name: "Elior · Bandra",
-    address: "14 Pali Hill, Bandra West",
     city: "Mumbai, Maharashtra",
-    phone: "+91 98765 43210",
+    address: "14 Pali Hill, Bandra West, Mumbai",
+    phone: "+91 12345 67890",
     hours: "8:00 AM — 10:00 PM",
+    images: ["bandra1.png", "bandra2.png", "bandra3.png", "bandra4.png"],
   },
   {
     name: "Elior · Fort",
-    address: "28 Kala Ghoda, Fort",
     city: "Mumbai, Maharashtra",
-    phone: "+91 98765 43211",
+    address: "28 Kala Ghoda, Fort, Mumbai",
+    phone: "+91 12345 67890",
     hours: "8:00 AM — 9:30 PM",
+    images: ["fort1.png", "fort2.png", "fort3.png", "fort4.png"],
   },
   {
     name: "Elior · Indiranagar",
-    address: "12 12th Main Road, Indiranagar",
     city: "Bengaluru, Karnataka",
-    phone: "+91 98765 43212",
+    address: "12th Main Road, Indiranagar, Bengaluru",
+    phone: "+91 12345 67890",
     hours: "8:00 AM — 10:00 PM",
+    images: [
+      "indiranagar1.png",
+      "indiranagar2.png",
+      "indiranagar3.png",
+      "indiranagar4.png",
+    ],
   },
   {
     name: "Elior · Koregaon Park",
-    address: "7 North Main Road, Koregaon Park",
     city: "Pune, Maharashtra",
-    phone: "+91 98765 43213",
+    address: "North Main Road, Koregaon Park, Pune",
+    phone: "+91 12345 67890",
     hours: "8:00 AM — 10:00 PM",
+    images: [
+      "koregaon-park1.png",
+      "koregaon-park2.png",
+      "koregaon-park3.png",
+    ],
   },
 ];
+
+const iconClass = "shrink-0 text-[#A8754F]";
+
+function CafeGallery({
+  images,
+  name,
+}: {
+  images: string[];
+  name: string;
+}) {
+  const [current, setCurrent] = useState(0);
+
+  const changeImage = (direction: number) =>
+    setCurrent((current + direction + images.length) % images.length);
+
+  return (
+    <div className="group relative aspect-[4/3] overflow-hidden bg-[#E8DDD0] sm:aspect-[16/10]">
+      <img
+        src={`/images/cafes/${images[current]}`}
+        alt={`${name} - photo ${current + 1}`}
+        className="h-full w-full object-cover"
+      />
+
+      <div className="absolute inset-x-3 top-1/2 flex -translate-y-1/2 justify-between">
+        {[
+          { direction: -1, icon: ArrowLeft, label: "Previous" },
+          { direction: 1, icon: ArrowRight, label: "Next" },
+        ].map(({ direction, icon: Icon, label }) => (
+          <button
+            key={label}
+            type="button"
+            onClick={() => changeImage(direction)}
+            aria-label={`${label} image for ${name}`}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2C211C]/55 text-white backdrop-blur-sm transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100"
+          >
+            <Icon size={15} strokeWidth={1.5} />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Contact() {
   return (
     <section className="bg-[#F5EFE6] text-[#2C211C]">
-      {/* Header */}
-      <div className="px-8 pb-16 pt-20 lg:px-20 lg:pt-24">
-        <p className="mb-5 text-xs uppercase tracking-[0.25em] text-[#A8754F]">
+      <header className="px-5 pb-10 pt-16 sm:px-8 sm:pb-12 sm:pt-20 lg:px-20 lg:pb-14 lg:pt-24">
+        <p className="mb-4 text-[10px] uppercase tracking-[0.25em] text-[#A8754F] sm:mb-5 sm:text-xs">
           Find us
         </p>
 
-        <div className="max-w-3xl">
-          <h1 className="font-serif text-5xl leading-[1.05] tracking-tight lg:text-7xl">
-            Come by for
-            <br />
-            a cup.
-          </h1>
+        <h1 className="max-w-5xl font-serif text-4xl leading-[0.95] tracking-tight sm:text-5xl lg:text-7xl">
+          There's always a table for you.
+        </h1>
+      </header>
 
-          <p className="mt-7 max-w-lg text-sm leading-7 text-[#2C211C]/60">
-            Four little corners of Elior, each made for slow mornings,
-            long conversations, and coffee that is worth staying for.
-          </p>
-        </div>
-      </div>
-
-      {/* Locations */}
       <div className="border-t border-[#2C211C]/10">
-        {locations.map((location, index) => (
-          <article
-            key={location.name}
-            className="group border-b border-[#2C211C]/10 px-8 py-10 transition-colors duration-300 hover:bg-[#E8DDD0]/50 lg:px-20"
-          >
-            <div className="grid gap-8 lg:grid-cols-[0.7fr_1fr_1fr_auto] lg:items-center">
-              {/* Number + Name */}
-              <div className="flex items-start gap-5">
-                <span className="pt-1 text-xs text-[#A8754F]">
-                  0{index + 1}
-                </span>
+        {locations.map((location, index) => {
+          const reverse = index % 2 !== 0;
 
-                <h2 className="font-serif text-2xl lg:text-3xl">
-                  {location.name}
-                </h2>
-              </div>
-
-              {/* Address */}
-              <div className="flex items-start gap-3">
-                <MapPin
-                  size={16}
-                  strokeWidth={1.5}
-                  className="mt-1 shrink-0 text-[#A8754F]"
-                />
-
-                <div className="text-sm leading-6 text-[#2C211C]/60">
-                  <p>{location.address}</p>
-                  <p>{location.city}</p>
-                </div>
-              </div>
-
-              {/* Contact */}
-              <div className="space-y-3 text-sm text-[#2C211C]/60">
-                <a
-                  href={`tel:${location.phone.replace(/\s/g, "")}`}
-                  className="flex items-center gap-3 transition-colors hover:text-[#2C211C]"
-                >
-                  <Phone
-                    size={15}
-                    strokeWidth={1.5}
-                    className="text-[#A8754F]"
-                  />
-                  {location.phone}
-                </a>
-
-                <div className="flex items-center gap-3">
-                  <Clock
-                    size={15}
-                    strokeWidth={1.5}
-                    className="text-[#A8754F]"
-                  />
-                  {location.hours}
-                </div>
-              </div>
-
-              {/* Directions */}
-              <button
-                type="button"
-                className="group/direction flex w-fit items-center gap-2 text-sm transition-colors hover:text-[#A8754F]"
+          return (
+            <article
+              key={location.name}
+              className="border-b border-[#2C211C]/10 px-5 py-8 sm:px-8 sm:py-10 lg:px-20 lg:py-12"
+            >
+              <div
+                className={`grid items-center gap-7 sm:gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 ${
+                  reverse ? "lg:[&>*:first-child]:order-2" : ""
+                }`}
               >
-                Directions
-                <ArrowUpRight
-                  size={15}
-                  strokeWidth={1.5}
-                  className="transition-transform duration-300 group-hover/direction:-translate-y-0.5 group-hover/direction:translate-x-0.5"
+                <CafeGallery
+                  images={location.images}
+                  name={location.name}
                 />
-              </button>
-            </div>
-          </article>
-        ))}
+
+                <div className="flex flex-col gap-6 sm:gap-7 lg:gap-8">
+                  <div>
+                    <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#A8754F] sm:text-[11px]">
+                      {location.city.split(",")[0]}
+                    </p>
+
+                    <h2 className="font-serif text-2xl leading-tight sm:text-3xl lg:text-4xl">
+                      {location.name}
+                    </h2>
+                  </div>
+
+                  <div className="space-y-3 text-sm text-[#2C211C]/60">
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        location.address
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-start gap-3 transition-colors hover:text-[#2C211C]"
+                    >
+                      <ArrowUpRight
+                        size={15}
+                        strokeWidth={1.5}
+                        className="mt-1 shrink-0 text-[#A8754F] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      />
+
+                      <span className="border-b border-transparent transition-colors group-hover:border-[#2C211C]/30">
+                        {location.address}
+                      </span>
+                    </a>
+
+                    <a
+                      href={`tel:${location.phone.replace(/\s/g, "")}`}
+                      className="flex items-center gap-3 transition-colors hover:text-[#2C211C]"
+                    >
+                      <Phone
+                        size={15}
+                        strokeWidth={1.5}
+                        className={iconClass}
+                      />
+                      {location.phone}
+                    </a>
+
+                    <div className="flex items-center gap-3">
+                      <Clock
+                        size={15}
+                        strokeWidth={1.5}
+                        className={iconClass}
+                      />
+                      {location.hours}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
-      {/* General Contact */}
-      <div className="grid gap-10 px-8 py-20 lg:grid-cols-2 lg:px-20 lg:py-28">
+      <div className="grid gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:px-20 lg:py-24">
         <div>
-          <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#A8754F]">
+          <p className="mb-4 text-[10px] uppercase tracking-[0.25em] text-[#A8754F] sm:text-xs">
             Say hello
           </p>
 
-          <h2 className="font-serif text-4xl leading-tight lg:text-5xl">
-            Questions?
+          <h2 className="font-serif text-4xl leading-tight sm:text-5xl">
+            Have something
             <br />
-            We'd love to hear from you.
+            to tell us?
           </h2>
         </div>
 
@@ -147,11 +203,7 @@ export default function Contact() {
             href="mailto:hello@elior.cafe"
             className="group flex w-fit items-center gap-3 text-sm"
           >
-            <Mail
-              size={17}
-              strokeWidth={1.5}
-              className="text-[#A8754F]"
-            />
+            <Mail size={17} strokeWidth={1.5} className={iconClass} />
 
             <span className="border-b border-[#2C211C]/30 pb-1 transition-colors group-hover:border-[#2C211C]">
               hello@elior.cafe
@@ -165,8 +217,8 @@ export default function Contact() {
           </a>
 
           <p className="max-w-md text-sm leading-7 text-[#2C211C]/55">
-            For collaborations, events, feedback, or anything else on your
-            mind, drop us a note and we'll get back to you soon.
+            Whether it's an idea for a collaboration, a private gathering,
+            some feedback, or simply a hello — we'd love to hear from you.
           </p>
         </div>
       </div>

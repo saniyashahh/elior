@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import Hero from "../components/hero";
 import MenuDisplay from "./menuDisplay";
@@ -10,53 +10,40 @@ type View = "home" | "menu" | "about" | "contact";
 
 export default function Home() {
   const [activeView, setActiveView] = useState<View>("home");
-  const [menuOpen, setMenuOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(
+    () => window.innerWidth >= 768
+  );
 
-  const handleNavigation = (view: View) => {
-    setActiveView(view);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeView]);
 
-    // Always start the selected page at the top
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const handleExploreMenu = () => {
-    handleNavigation("menu");
-    setMenuOpen(true);
-  };
-
-  const handleFindUs = () => {
-    handleNavigation("contact");
-    setMenuOpen(true);
-  };
+  const sidebarWidth = menuOpen ? "lg:ml-[230px]" : "lg:ml-[88px]";
+  const pageWidth = menuOpen
+    ? "lg:w-[calc(100%_-_230px)]"
+    : "lg:w-[calc(100%_-_88px)]";
 
   return (
-    <main className="min-h-screen bg-[#F5EFE6] text-[#2C211C]">
+    <main className="min-h-screen w-full overflow-x-hidden bg-[#F5EFE6] text-[#2C211C]">
       <Sidebar
         activeView={activeView}
         menuOpen={menuOpen}
-        onNavigate={handleNavigation}
+        onNavigate={setActiveView}
         onToggle={() => setMenuOpen((open) => !open)}
       />
 
       <section
-        className={`min-h-screen transition-all duration-500 ${
-          menuOpen ? "ml-[230px]" : "ml-[88px]"
-        }`}
+        className={`min-h-screen w-full pt-[72px] transition-all duration-500 md:pt-0 ${sidebarWidth} ${pageWidth}`}
       >
         {activeView === "home" && (
           <Hero
-            onExploreMenu={handleExploreMenu}
-            onFindUs={handleFindUs}
+            onExploreMenu={() => setActiveView("menu")}
+            onFindUs={() => setActiveView("contact")}
           />
         )}
 
         {activeView === "menu" && <MenuDisplay />}
-
         {activeView === "about" && <About />}
-
         {activeView === "contact" && <Contact />}
 
         <Footer />

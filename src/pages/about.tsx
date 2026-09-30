@@ -1,31 +1,28 @@
 export default function About() {
   return (
-    <section className="min-h-screen bg-[#F5EFE6] text-[#2C211C]">
-      {/* Story */}
-      <div className="grid min-h-screen lg:grid-cols-2">
-        {/* Image */}
-        <div className="relative min-h-[500px] overflow-hidden bg-[#DCCBBC]">
+    <section className="bg-[#F5EFE6] text-[#2C211C] lg:h-[calc(100vh-1px)] lg:overflow-hidden">
+      <div className="grid h-full lg:grid-cols-2">
+        <div className="relative h-[45vh] min-h-[320px] overflow-hidden bg-[#DCCBBC] lg:h-full">
           <img
             src="/images/about-img.png"
             alt="A warm coffee moment at Elior"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-center"
           />
 
-          <div className="absolute inset-8 border border-[#F5EFE6]/50" />
+          <div className="absolute inset-5 border border-[#F5EFE6]/50 sm:inset-8" />
         </div>
 
-        {/* Content */}
-        <div className="flex items-center px-8 py-16 lg:px-20">
-          <div className="max-w-lg">
-            <p className="mb-5 text-xs uppercase tracking-[0.25em] text-[#A8754F]">
+        <div className="flex items-center px-7 py-12 sm:px-10 md:py-16 lg:px-12 xl:px-16">
+          <div className="w-full max-w-lg">
+            <p className="mb-3 text-[10px] uppercase tracking-[0.25em] text-[#A8754F] sm:text-xs">
               Our story
             </p>
 
-            <h1 className="font-serif text-5xl leading-[1.05] tracking-tight lg:text-6xl">
+            <h1 className="font-serif text-4xl leading-[1.05] tracking-tight sm:text-5xl xl:text-6xl">
               A place to slow down.
             </h1>
 
-            <div className="mt-8 space-y-5 text-sm leading-7 text-[#2C211C]/65">
+            <div className="mt-6 space-y-3.5 text-sm leading-6 text-[#2C211C]/65 xl:mt-7 xl:space-y-4 xl:leading-6.5">
               <p>
                 Elior started with a simple thought: maybe a café could be a
                 place where nothing needs to be rushed.
@@ -51,7 +48,7 @@ export default function About() {
               </p>
             </div>
 
-            <p className="mt-10 font-serif text-xl italic text-[#4A3428]">
+            <p className="mt-7 font-serif text-lg italic leading-6 text-[#4A3428] xl:mt-8 xl:text-xl">
               “Take your time. Your coffee isn't going anywhere.”
             </p>
           </div>
