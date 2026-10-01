@@ -1,47 +1,36 @@
 import { useState } from "react";
 import { ArrowUpRight, Clock, MapPin, Phone } from "lucide-react";
+import { menuItems } from "./menuData";
 
 interface HeroProps {
   onExploreMenu: () => void;
   onFindUs: () => void;
 }
 
-const featuredItems = [
-  {
-    name: "Iced Latte",
-    description: "Chilled espresso, fresh milk and plenty of ice.",
-    image: "/menu/iced-latte.png",
-  },
-  {
-    name: "Butter Croissant",
-    description: "Freshly baked, golden and flaky",
-    image: "/menu/butter-croissant.png",
-  },
-  {
-    name: "Elior Breakfast",
-    description: "A little bit of everything",
-    image: "/menu/elior-breakfast.png",
-  },
-  {
-    name: "Cappuccino",
-    description: "Espresso, steamed milk and a soft layer of foam.",
-    image: "/menu/cappuccino.png",
-  },
+const featuredNames = [
+  "Iced Latte",
+  "Butter Croissant",
+  "Grilled Cheese Sandwich",
+  "Cappuccino",
 ];
+
+const featuredItems = featuredNames
+  .map((name) => menuItems.find((item) => item.name === name))
+  .filter((item) => item !== undefined);
 
 const locations = [
   {
     name: "Elior · Bandra",
     address: "Bandra West, Mumbai",
     hours: "8:00 AM – 11:00 PM",
-    phone: "+91 98765 43210",
+    phone: "+91 12345 67890",
     image: "/images/cafes/bandra1.png",
   },
   {
     name: "Elior · Fort",
     address: "Fort, Mumbai",
     hours: "8:00 AM – 11:00 PM",
-    phone: "+91 98765 43211",
+    phone: "+91 12345 67890",
     image: "/images/cafes/fort1.png",
   },
 ];
@@ -166,10 +155,6 @@ export default function Hero({
       <section className="border-t border-[#2C211C]/10 bg-[#E4D8CA] px-4 py-8 sm:px-10 sm:py-14 lg:px-18">
         <div className="mx-auto max-w-7xl">
           <header className="mb-5 sm:mb-8">
-            <p className="text-[9px] uppercase tracking-[0.24em] text-[#A8754F] sm:text-[11px]">
-              Come by
-            </p>
-
             <h2 className="mt-2 font-serif text-[2rem] leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
               Find us around town.
             </h2>
@@ -281,11 +266,11 @@ export default function Hero({
           <div className="mt-7 flex justify-center sm:mt-12">
             <button
               onClick={onFindUs}
-              className="group flex items-center gap-2 rounded-full border border-[#2C211C]/20 
-              bg-[#2C211C] text-[#F5EFE6] px-4 py-2 text-[9px] font-semibold uppercase
-              tracking-[0.1em] shadow-sm transition-all duration-300
-              hover:bg-[#F5EFE6] hover:text-[#2C211C]
-              sm:gap-3 sm:px-6 sm:py-3 sm:text-sm"
+              className="group flex items-center gap-2 rounded-full border border-[#2C211C]/20
+                bg-[#2C211C] px-4 py-2 text-[9px] font-semibold uppercase
+                tracking-[0.1em] text-[#F5EFE6] shadow-sm transition-all duration-300
+                hover:bg-[#F5EFE6] hover:text-[#2C211C]
+                sm:gap-3 sm:px-6 sm:py-3 sm:text-sm"
             >
               Our locations
 

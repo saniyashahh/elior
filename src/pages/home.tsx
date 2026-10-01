@@ -4,9 +4,10 @@ import Hero from "../components/hero";
 import MenuDisplay from "./menuDisplay";
 import About from "./about";
 import Contact from "./contact";
+import Account from "./myAccount";
 import Footer from "../components/footer";
 
-type View = "home" | "menu" | "about" | "contact";
+type View = "home" | "menu" | "about" | "contact" | "account";
 
 export default function Home() {
   const [activeView, setActiveView] = useState<View>("home");
@@ -45,6 +46,7 @@ export default function Home() {
         {activeView === "menu" && <MenuDisplay />}
         {activeView === "about" && <About />}
         {activeView === "contact" && <Contact />}
+        {activeView === "account" && <Account />}
 
         <Footer />
       </section>

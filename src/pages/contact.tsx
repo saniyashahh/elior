@@ -97,12 +97,12 @@ function CafeGallery({
 export default function Contact() {
   return (
     <section className="bg-[#F5EFE6] text-[#2C211C]">
-      <header className="px-5 pb-10 pt-16 sm:px-8 sm:pb-12 sm:pt-20 lg:px-20 lg:pb-14 lg:pt-24">
+      <header className="px-5 pb-10 pt-16 sm:px-8 sm:pb-12 sm:pt-20 lg:px-20 lg:pb-14 lg:pt-18">
         <p className="mb-4 text-[10px] uppercase tracking-[0.25em] text-[#A8754F] sm:mb-5 sm:text-xs">
           Find us
         </p>
 
-        <h1 className="max-w-5xl font-serif text-4xl leading-[0.95] tracking-tight sm:text-5xl lg:text-7xl">
+        <h1 className="max-w-5xl font-serif text-4xl leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
           There's always a table for you.
         </h1>
       </header>
@@ -187,10 +187,6 @@ export default function Contact() {
 
       <div className="grid gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:px-20 lg:py-24">
         <div>
-          <p className="mb-4 text-[10px] uppercase tracking-[0.25em] text-[#A8754F] sm:text-xs">
-            Say hello
-          </p>
-
           <h2 className="font-serif text-4xl leading-tight sm:text-5xl">
             Have something
             <br />

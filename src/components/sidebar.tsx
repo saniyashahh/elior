@@ -5,10 +5,11 @@ import {
   Info,
   MapPin,
   Menu as MenuIcon,
+  UserRound,
   X,
 } from "lucide-react";
 
-type View = "home" | "menu" | "about" | "contact";
+type View = "home" | "menu" | "about" | "contact" | "account";
 
 interface SidebarProps {
   activeView: View;
@@ -24,18 +25,38 @@ const navItems = [
   { label: "Contact", icon: <MapPin size={18} strokeWidth={1.5} />, view: "contact" as View },
 ];
 
-const socials = [
-  { label: "Instagram", icon: "◎", url: "https://www.instagram.com/" },
-  { label: "Facebook", icon: "f", url: "https://www.facebook.com/" },
-  { label: "Zomato", icon: "Z", url: "https://www.zomato.com/" },
-];
-
 const Logo = ({ full = false }: { full?: boolean }) => (
   <img
     src={full ? "/logo1.png" : "/logo2.png"}
     alt="Elior"
-    className={full ? "w-[60px] h-auto" : "size-7 object-contain"}
+    className={full ? "h-auto w-[60px]" : "size-7 object-contain"}
   />
+);
+
+const Account = ({
+  expanded = false,
+  active = false,
+  onClick,
+}: {
+  expanded?: boolean;
+  active?: boolean;
+  onClick: () => void;
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-label="My Account"
+    className={`flex w-full items-center justify-center transition-colors ${
+      expanded ? "gap-2.5" : ""
+    } ${
+      active
+        ? "text-[#2C211C]"
+        : "text-[#2C211C]/55 hover:text-[#2C211C]"
+    }`}
+  >
+    <UserRound size={18} strokeWidth={1.5} />
+    {expanded && <span className="text-sm">My Account</span>}
+  </button>
 );
 
 export default function Sidebar({
@@ -73,20 +94,18 @@ export default function Sidebar({
           menuOpen ? "w-[230px]" : "w-[88px]"
         }`}
       >
+        {/* Edge fade */}
         <div
           className="pointer-events-none absolute right-0 top-0 h-full w-[18px] translate-x-full"
           style={{
             background:
-              "linear-gradient(to right, rgba(156, 139, 130, 0.12), transparent)",
+              "linear-gradient(to right, rgba(97, 79, 72, 0.14), transparent)",
           }}
         />
 
         {/* Logo */}
-        <div className="flex h-[104px] items-center justify-center border-b border-[#2C211C]/10">
-          <button
-            onClick={() => onNavigate("home")}
-            aria-label="Go to home"
-          >
+        <div className="flex h-[104px] shrink-0 items-center justify-center border-b border-[#2C211C]/10">
+          <button onClick={() => onNavigate("home")} aria-label="Go to home">
             <Logo full={menuOpen} />
           </button>
         </div>
@@ -132,26 +151,13 @@ export default function Sidebar({
           </div>
         </nav>
 
-        {/* Socials */}
+        {/* Account */}
         <div className="border-t border-[#2C211C]/10 px-4 py-6">
-          <div
-            className={`flex items-center ${
-              menuOpen ? "justify-center gap-6" : "flex-col gap-5"
-            }`}
-          >
-            {socials.map((social) => (
-              <a
-                key={social.label}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.label}
-                className="text-sm font-medium text-[#2C211C]/50 transition hover:text-[#2C211C]"
-              >
-                {social.icon}
-              </a>
-            ))}
-          </div>
+          <Account
+            expanded={menuOpen}
+            active={activeView === "account"}
+            onClick={() => onNavigate("account")}
+          />
         </div>
 
         {/* Expand / Collapse */}
@@ -169,8 +175,8 @@ export default function Sidebar({
         data-mobile-navbar
         className="fixed inset-x-0 top-0 z-50 bg-[#E8DDD0] md:hidden"
       >
+        {/* Top bar */}
         <div className="relative flex h-[72px] items-center border-b border-[#2C211C]/10 px-5">
-          {/* Home = full logo, other sections = symbol */}
           <button
             onClick={() => mobileNavigate("home")}
             aria-label="Go to home"
@@ -225,13 +231,12 @@ export default function Sidebar({
                   >
                     <span
                       className={
-                        active
-                          ? "text-[#A8754F]"
-                          : "text-[#2C211C]/40"
+                        active ? "text-[#A8754F]" : "text-[#2C211C]/40"
                       }
                     >
                       {item.icon}
                     </span>
+
                     <span className={active ? "font-medium" : ""}>
                       {item.label}
                     </span>
@@ -240,22 +245,13 @@ export default function Sidebar({
               })}
             </div>
 
-            {/* Mobile socials */}
+            {/* Account */}
             <div className="mt-7 w-full border-t border-[#2C211C]/10 pt-5">
-              <div className="flex justify-center gap-6">
-                {socials.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="text-sm font-medium text-[#2C211C]/50 transition hover:text-[#2C211C]"
-                  >
-                    {social.icon}
-                  </a>
-                ))}
-              </div>
+              <Account
+                expanded
+                active={activeView === "account"}
+                onClick={() => mobileNavigate("account")}
+              />
             </div>
           </nav>
         </div>
